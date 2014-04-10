@@ -430,7 +430,7 @@
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
         if (self.position == AAPullToRefreshPositionLeft) {
-            self.scrollView.contentOffset = CGPointMake(-currentInsets.left, self.scrollView.contentOffset.x);
+            self.scrollView.contentOffset = CGPointMake(-currentInsets.left, self.scrollView.contentOffset.y);
         } else {
             self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, -currentInsets.top);
         }
