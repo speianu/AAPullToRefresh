@@ -27,8 +27,7 @@
     
     view.pullToRefreshHandler = handler;
     view.scrollView = self;
-    view.originalInsetTop = self.contentInset.top;
-    view.originalInsetBottom = self.contentInset.bottom;
+    view.originalInsets = self.contentInset;
     view.showPullToRefresh = YES;
     [self addSubview:view];
     
@@ -189,11 +188,13 @@
     UIEdgeInsets currentInsets = self.scrollView.contentInset;
     if (self.position == AAPullToRefreshPositionTop) {
         CGFloat offset = MAX(self.scrollView.contentOffset.y * -1, 0);
-        currentInsets.top = MIN(offset, self.originalInsetTop + self.bounds.size.height + 20.0f);
+        currentInsets.top = MIN(offset, self.originalInsets.top + self.bounds.size.height + 20.0f);
+    } else if (self.position == AAPullToRefreshPositionLeft) {
+        currentInsets.left = self.threshold;//MIN(self.threshold, self.originalInsetBottom + self.bounds.size.height + 40.0f);
     } else {
         //CGFloat overBottomOffsetY = self.scrollView.contentOffset.y - self.scrollView.contentSize.height + self.scrollView.frame.size.height;
         //currentInsets.bottom = MIN(overBottomOffsetY, self.originalInsetBottom + self.bounds.size.height + 40.0);
-        currentInsets.bottom = MIN(self.threshold, self.originalInsetBottom + self.bounds.size.height + 40.0f);
+        currentInsets.bottom = MIN(self.threshold, self.originalInsets.bottom + self.bounds.size.height + 40.0f);
     }
     [self setScrollViewContentInset:currentInsets handler:handler];
 }
@@ -201,8 +202,10 @@
 - (void)resetScrollViewContentInset:(actionHandler)handler
 {
     UIEdgeInsets currentInsets = self.scrollView.contentInset;
-    currentInsets.top = self.originalInsetTop;
-    currentInsets.bottom = self.originalInsetBottom;
+    currentInsets.top = self.originalInsets.top;
+    currentInsets.bottom = self.originalInsets.bottom;
+    
+    currentInsets = self.originalInsets;
     [self setScrollViewContentInset:currentInsets handler:handler];
 }
 
@@ -327,9 +330,9 @@
     CGFloat centerY;
     switch (self.position) {
         case AAPullToRefreshPositionTop:
-            self.progress = ((yOffset + self.originalInsetTop) / -self.threshold);
+            self.progress = ((yOffset + self.originalInsets.top) / -self.threshold);
             centerX = self.scrollView.center.x + xOffset;
-            centerY = (yOffset + self.originalInsetTop) / 2.0f;
+            centerY = (yOffset + self.originalInsets.top) / 2.0f;
             break;
         case AAPullToRefreshPositionBottom:
             self.progress = overBottomOffsetY / self.threshold;
@@ -419,9 +422,18 @@
     [self setLayerOpacity:0.0f];
     
     UIEdgeInsets currentInsets = self.scrollView.contentInset;
-    currentInsets.top = self.originalInsetTop + self.bounds.size.height + 20.0f;
+    currentInsets.top = self.originalInsets.top + self.bounds.size.height + 20.0f;
+    
+    if (self.position == AAPullToRefreshPositionLeft) {
+        currentInsets.left = self.threshold;
+    }
+    
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, -currentInsets.top);
+        if (self.position == AAPullToRefreshPositionLeft) {
+            self.scrollView.contentOffset = CGPointMake(-currentInsets.left, self.scrollView.contentOffset.x);
+        } else {
+            self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x, -currentInsets.top);
+        }
     } completion:^(BOOL finished) {
         [self actionTriggeredState];
     }];
