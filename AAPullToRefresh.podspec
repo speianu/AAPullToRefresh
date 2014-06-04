@@ -5,8 +5,9 @@ Pod::Spec.new do |s|
   s.homepage      = "https://github.com/r-plus/AAPullToRefresh/"
   s.license       = 'MIT'
   s.author        = { "r-plus" => "anasthasia.r@gmail.com" }
-  s.source        = { :git => "https://github.com/r-plus/AAPullToRefresh.git", :tag => s.version.to_s }
+  s.source        = { :git => "https://github.com/speianu/AAPullToRefresh.git", :tag => s.version.to_s }
   s.platform      = :ios, '6.0'
-  s.source_files  = 'AAPullToRefresh'
+  s.source_files  = 'AAPullToRefresh/*.{h,m}'
+  s.resources    = 'AAPullToRefresh/*.{png}'
   s.requires_arc  = true
 end
