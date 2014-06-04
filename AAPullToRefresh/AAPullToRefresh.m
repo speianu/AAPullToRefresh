@@ -1,4 +1,5 @@
 #import "AAPullToRefresh.h"
+#import "LYActivityIndicator.h"
 
 #define DEGREES_TO_RADIANS(x) (x)/180.0*M_PI
 #define RADIANS_TO_DEGREES(x) (x)/M_PI*180.0
@@ -92,7 +93,7 @@
 @property (nonatomic, assign) BOOL isObserving;
 @property (nonatomic, assign) AAPullToRefreshState state;
 @property (nonatomic, assign, readonly) BOOL isSidePosition;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;  //Loading Indicator
+@property (nonatomic, strong) LYActivityIndicator *activityIndicatorView;  //Loading Indicator
 @property (nonatomic, strong) AAPullToRefreshBackgroundLayer *backgroundLayer;
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
 @property (nonatomic, strong) CALayer *imageLayer;
@@ -116,7 +117,7 @@
 
 - (void)_commonInit
 {
-    self.borderColor = [UIColor colorWithRed:203/255.0 green:32/255.0 blue:39/255.0 alpha:1];
+    self.borderColor = UIColorFromRGB(0xFB3A3D);
     self.borderWidth = 2.0f;
     self.threshold = 60.0f;
     self.isUserAction = NO;
@@ -127,16 +128,14 @@
     else
         self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.backgroundColor = [UIColor clearColor];
-    //init actitvity indicator
-    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    _activityIndicatorView.hidesWhenStopped = YES;
+    _activityIndicatorView = [[LYActivityIndicator alloc] init];
     _activityIndicatorView.frame = self.bounds;
     [self addSubview:_activityIndicatorView];
     
     //init background layer
     AAPullToRefreshBackgroundLayer *backgroundLayer = [[AAPullToRefreshBackgroundLayer alloc] initWithBorderWidth:self.borderWidth];
     backgroundLayer.frame = self.bounds;
-    [self.layer addSublayer:backgroundLayer];
+//    [self.layer addSublayer:backgroundLayer];
     self.backgroundLayer = backgroundLayer;
     
     if (!self.imageIcon)
@@ -147,7 +146,7 @@
     imageLayer.contentsScale = [UIScreen mainScreen].scale;
     imageLayer.frame = CGRectInset(self.bounds, self.borderWidth, self.borderWidth);
     imageLayer.contents = (id)self.imageIcon.CGImage;
-    [self.layer addSublayer:imageLayer];
+//    [self.layer addSublayer:imageLayer];
     self.imageLayer = imageLayer;
     
     //init arc draw layer
