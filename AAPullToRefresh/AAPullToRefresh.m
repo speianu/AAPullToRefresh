@@ -459,6 +459,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
     frame.size.width -= 5.0;
     frame.size.height -= 5.0;
     self.activityIndicatorView.frame = frame;
+    self.activityIndicatorView.center = CGPointMake(0.5 * self.bounds.size.width, 0.5 * self.bounds.size.height);
     self.imageLayer.frame = CGRectInset(self.bounds, self.borderWidth, self.borderWidth);
     
     self.backgroundLayer.frame = self.bounds;
