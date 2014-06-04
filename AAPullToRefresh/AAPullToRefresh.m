@@ -455,7 +455,10 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
     
     self.frame = rect;
     self.shapeLayer.frame = self.bounds;
-    self.activityIndicatorView.frame = self.bounds;
+    CGRect frame = self.bounds;
+    frame.size.width -= 5.0;
+    frame.size.height -= 5.0;
+    self.activityIndicatorView.frame = frame;
     self.imageLayer.frame = CGRectInset(self.bounds, self.borderWidth, self.borderWidth);
     
     self.backgroundLayer.frame = self.bounds;
