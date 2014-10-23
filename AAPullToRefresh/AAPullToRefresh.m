@@ -1,5 +1,4 @@
 #import "AAPullToRefresh.h"
-#import "LYActivityIndicator.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
@@ -103,7 +102,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
 @property (nonatomic, assign) BOOL isObserving;
 @property (nonatomic, assign) AAPullToRefreshState state;
 @property (nonatomic, assign, readonly) BOOL isSidePosition;
-@property (nonatomic, strong) LYActivityIndicator *activityIndicatorView;  //Loading Indicator
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;  //Loading Indicator
 @property (nonatomic, strong) AAPullToRefreshBackgroundLayer *backgroundLayer;
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
 @property (nonatomic, strong) CALayer *imageLayer;
@@ -138,7 +137,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
     else
         self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.backgroundColor = [UIColor clearColor];
-    _activityIndicatorView = [[LYActivityIndicator alloc] init];
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     _activityIndicatorView.frame = self.bounds;
     [self addSubview:_activityIndicatorView];
     
